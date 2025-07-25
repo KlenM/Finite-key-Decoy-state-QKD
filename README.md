@@ -1,12 +1,15 @@
-# Decoy State Protocol
+# Finite-key Decoy-State Quantum Key Distribution Protocol
 
-Implements a finite-size decoy state protocol for quantum key distribution (QKD) analysis.
+Implements a finite-key decoy-state protocol for quantum key distribution (QKD) analysis.
+
 
 ## Install
 
 ```bash
-pip install .
+pip install git+https://github.com/KlenM/Finite-key-Decoy-state-QKD.git
 ```
+
+Or clone the repository and run `pip install .` from the project folder.
 
 ## Usage
 

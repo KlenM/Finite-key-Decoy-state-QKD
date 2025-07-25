@@ -1,5 +1,5 @@
 [project]
-name = "decoy-state-protocol"
+name = "decoy-state"
 version = "0.1.0"
 description = "Finite-size decoy state protocol implementation for quantum key distribution"
 readme = "README.md"
