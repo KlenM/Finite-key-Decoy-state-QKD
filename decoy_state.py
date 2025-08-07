@@ -249,7 +249,7 @@ class DecoyStateFinite():
         raise RuntimeError("Can't find any set of parameters for positive keyrate.")
 
     @staticmethod
-    def optimize_params(transmittance, N, Y_0, e_mis, p_a=None, f_EC=1.22, eps_sec=1e-10, eps_cor=1e-10, max_phase_error=0.1, mu_1=None, mu_2=None, mu_3=0, p_1=None, p_2=None, p_X=None, seed=0, debug=False):
+    def optimize_params(transmittance, N, Y_0, e_mis, p_a=None, f_EC=1.22, eps_sec=1e-10, eps_cor=1e-10, max_phase_error=0.1, initial_guess_tries=100000, mu_1=None, mu_2=None, mu_3=0, p_1=None, p_2=None, p_X=None, seed=0, debug=False):
         params = dict(transmittance=transmittance, N=N, Y_0=Y_0, e_mis=e_mis, p_a=p_a, f_EC=f_EC, eps_sec=eps_sec, eps_cor=eps_cor, max_phase_error=max_phase_error)
 
         params_order = ['mu_1', 'mu_2', 'mu_3', 'p_1', 'p_2', 'p_X']
@@ -280,7 +280,7 @@ class DecoyStateFinite():
 
         initial_guess = [0.8, 0.15, 0, 0.85, 0.1, 0.95]
         if objective(initial_guess) <= 0:
-            _g = DecoyStateFinite.random_channel_params(**params, debug=debug, seed=seed)
+            _g = DecoyStateFinite.random_channel_params(**params, debug=debug, seed=seed, tries=initial_guess_tries)
             initial_guess = (_g['mu_k'][0], _g['mu_k'][1], _g['mu_k'][2], _g['p_k'][0], _g['p_k'][1], _g['p_X'])
 
 
@@ -306,10 +306,10 @@ class DecoyStateFinite():
         return optimized_params
 
     @classmethod
-    def from_channel_params_optimize(cls, transmittance, N, Y_0, e_mis, p_a=None, f_EC=1.22, eps_sec=1e-10, eps_cor=1e-10, max_phase_error=0.1, mu_1=None, mu_2=None, mu_3=0, p_1=None, p_2=None, p_X=None, seed=0, debug=False):
+    def from_channel_params_optimize(cls, transmittance, N, Y_0, e_mis, p_a=None, f_EC=1.22, eps_sec=1e-10, eps_cor=1e-10, max_phase_error=0.1, initial_guess_tries=100000, mu_1=None, mu_2=None, mu_3=0, p_1=None, p_2=None, p_X=None, seed=0, debug=False):
         params = dict(transmittance=transmittance, N=N, Y_0=Y_0, e_mis=e_mis, p_a=p_a, f_EC=f_EC, eps_sec=eps_sec, eps_cor=eps_cor, max_phase_error=max_phase_error)
         fixed_params = dict(mu_1=mu_1, mu_2=mu_2, mu_3=mu_3, p_1=p_1, p_2=p_2, p_X=p_X)
-        optimized_params = DecoyStateFinite.optimize_params(**params, **fixed_params, seed=0, debug=False)
+        optimized_params = DecoyStateFinite.optimize_params(**params, **fixed_params, initial_guess_tries=initial_guess_tries, seed=0, debug=False)
         if debug:
             print(optimized_params)
         return cls.from_channel_params(**optimized_params, **params)
