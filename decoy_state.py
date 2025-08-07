@@ -18,7 +18,10 @@ def expected_detection_rate(transmittance, k, Y_0):
     k: intensity $k \in \{\mu_1, \mu_2, \mu_3\}$
     Y_0:  dark count probability
     """
-    return 1 - (1 - Y_0) * np.exp(-transmittance * k)
+
+    transmittance = np.asarray(transmittance)
+    gain = 1 - (1 - Y_0) * np.exp(-transmittance * k)
+    return gain.mean()
 
 
 def intensity_bit_error_rate(transmittance, k, Y_0, e_mis, e_0=0.5):
@@ -192,7 +195,7 @@ class DecoyStateFinite():
 
         Args:
             N (int): Total number of pulses sent.
-            transmittance (float): Overall channel transmittance (eta).
+            transmittance (float | np.arraylike): Overall hannel transmittance (eta).
             Y_0 (float): Dark count probability per pulse.
             e_mis (float): Misalignment error rate.
             mu_k (list): Intensities [mu_1, mu_2, mu_3].
