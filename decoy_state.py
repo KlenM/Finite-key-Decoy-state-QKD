@@ -394,7 +394,7 @@ class DecoyStateAsymptotic():
 
         EkQk = self.E_k * self.Q_k
         nu_1_upper = single_photon_errors_upper_bound(*self.mu_k, *p_k, EkQk[1], EkQk[2])
-        e_ph1 = nu_1_upper / Qs_1
+        e_ph1 = nu_1_upper / s_1 # single_photon_errors_upper_bound includes all mu_k states, so we need to divide on s_1
 
         if debug:
             print(f"{s_0=:.2e}, {s_1=:.2e}, {e_ph1=:.2e}")
